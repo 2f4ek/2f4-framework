@@ -3,5 +3,7 @@ vendor
 .idea
 .phan
 
+logs
+
 docker-compose.yml
 composer.lock

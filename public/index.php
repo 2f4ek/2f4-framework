@@ -2,6 +2,7 @@
 
 use Framework2f4\Controller\TestController;
 use GuzzleHttp\Psr7\ServerRequest;
+use Psr\Log\LoggerInterface;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -21,7 +22,7 @@ $method = $request->getMethod();
 $controllerInfo = $routes[$uri][$method] ?? null;
 if ($controllerInfo) {
     [$controller, $method] = $controllerInfo;
-    $controller = new $controller();
+    $controller = new $controller($container->get(LoggerInterface::class));
     $response = $controller->$method($request);
 
     echo $response->getBody();
