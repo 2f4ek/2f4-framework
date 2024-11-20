@@ -6,7 +6,7 @@ use Psr\Http\Message\ResponseInterface;
 use GuzzleHttp\Psr7\Response;
 use Psr\Log\LoggerInterface;
 
-readonly class TestController
+readonly class ExampleController
 {
     public function __construct(private LoggerInterface $logger)
     {
@@ -15,7 +15,7 @@ readonly class TestController
     public function testGet(): ResponseInterface
     {
         $this->logger->info('Get Request');
-        
+
         return new Response(200, [], 'Get response');
     }
 

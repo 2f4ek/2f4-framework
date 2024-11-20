@@ -1,6 +1,6 @@
 <?php
 
-use Framework2f4\Controller\TestController;
+use Framework2f4\Controller\ExampleController;
 use GuzzleHttp\Psr7\ServerRequest;
 use Psr\Log\LoggerInterface;
 
@@ -11,9 +11,9 @@ $request = ServerRequest::fromGlobals();
 
 $routes = [
     '/' => [
-        'GET' => [TestController::class, 'testGet'],
-        'POST' => [TestController::class, 'testPost'],
-        'PUT' => [TestController::class, 'testPut'],
+        'GET' => [ExampleController::class, 'testGet'],
+        'POST' => [ExampleController::class, 'testPost'],
+        'PUT' => [ExampleController::class, 'testPut'],
     ],
 ];
 
