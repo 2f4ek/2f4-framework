@@ -1,0 +1,7 @@
+vendor
+.codesight
+.idea
+.phan
+
+docker-compose.yml
+composer.lock
