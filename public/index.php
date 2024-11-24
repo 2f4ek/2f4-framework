@@ -24,7 +24,7 @@ $headers = getallheaders();
 $body = new Stream(fopen('php://input', 'r+'));
 $request = new ServerRequest($method, $uri, $headers, $body, $_SERVER);
 
-$router = new Route($routes);
+$router = new Route($container, $routes);
 $response = $router->dispatch($request);
 
 header(sprintf(

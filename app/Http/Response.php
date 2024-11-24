@@ -4,7 +4,6 @@ namespace Framework2f4\Http;
 
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\StreamInterface;
 
 class Response extends Message implements ResponseInterface
 {
@@ -27,11 +26,11 @@ class Response extends Message implements ResponseInterface
     ];
 
     public function __construct(
-        int                     $statusCode = 200,
-        private array           $headers = [],
-        private string          $reasonPhrase = '',
-        private string          $protocolVersion = '1.1',
-        private ?StreamInterface $body = null,
+        int            $statusCode = 200,
+        private array  $headers = [],
+        private mixed  $body = null,
+        private string $reasonPhrase = '',
+        private string $protocolVersion = '1.1',
     )
     {
         parent::__construct($body, $protocolVersion, $headers);
@@ -90,12 +89,12 @@ class Response extends Message implements ResponseInterface
         return $clone;
     }
 
-    public function getBody(): StreamInterface
+    public function getBody(): mixed
     {
         return $this->body;
     }
 
-    public function withBody(StreamInterface $body): self
+    public function withBody(mixed $body): self
     {
         $clone = clone $this;
         $clone->body = $body;

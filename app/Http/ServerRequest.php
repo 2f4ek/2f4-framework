@@ -4,7 +4,6 @@ namespace Framework2f4\Http;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
-use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use InvalidArgumentException;
 
@@ -13,17 +12,18 @@ class ServerRequest extends Request implements ServerRequestInterface
     private array $attributes = [];
 
     public function __construct(
-        protected string $method,
+        protected string       $method,
         protected UriInterface $uri,
         private readonly array $serverParams,
-        protected ?StreamInterface $body,
-        protected array $headers = [],
-        private array $cookieParams = [],
-        private array $queryParams = [],
-        private array $uploadedFiles = [],
-        private mixed $parsedBody = null,
-        protected string $protocolVersion = '1.1'
-    ) {
+        protected mixed        $body = null,
+        protected array        $headers = [],
+        private array          $cookieParams = [],
+        private array          $queryParams = [],
+        private array          $uploadedFiles = [],
+        private mixed          $parsedBody = null,
+        protected string       $protocolVersion = '1.1'
+    )
+    {
         parent::__construct($method, $uri, $body, $headers, $protocolVersion);
         $this->setUploadedFiles($uploadedFiles);
     }

@@ -12,11 +12,11 @@ class UploadedFile implements UploadedFileInterface
     private bool $moved = false;
 
     public function __construct(
-        private string $file,
-        private int $size,
-        private int $error,
-        private ?string $clientFilename = null,
-        private ?string $clientMediaType = null
+        private readonly string  $file,
+        private readonly int     $size,
+        private readonly int     $error,
+        private readonly ?string $clientFilename = null,
+        private readonly ?string $clientMediaType = null
     ) {}
 
     public function getStream(): StreamInterface

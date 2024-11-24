@@ -4,7 +4,6 @@ namespace Framework2f4\Http;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\UriInterface;
-use Psr\Http\Message\StreamInterface;
 
 class Request extends Message implements RequestInterface
 {
@@ -13,7 +12,7 @@ class Request extends Message implements RequestInterface
     public function __construct(
         private string $method,
         private UriInterface $uri,
-        protected ?StreamInterface $body = null,
+        protected mixed $body = null,
         protected array $headers = [],
         protected string $protocolVersion = '1.1'
     ) {

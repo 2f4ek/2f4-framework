@@ -8,7 +8,7 @@ use Psr\Http\Message\StreamInterface;
 class Message implements MessageInterface
 {
     public function __construct(
-        private ?StreamInterface $body = null,
+        private mixed $body = null,
         private string $protocolVersion = '1.1',
         private array $headers = []
     ) {}
@@ -77,7 +77,7 @@ class Message implements MessageInterface
         return $new;
     }
 
-    public function getBody(): StreamInterface
+    public function getBody(): mixed
     {
         return $this->body;
     }
