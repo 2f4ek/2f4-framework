@@ -14,9 +14,9 @@ class ServerRequest extends Request implements ServerRequestInterface
     public function __construct(
         protected string       $method,
         protected UriInterface $uri,
-        private readonly array $serverParams,
-        protected mixed        $body = null,
         protected array        $headers = [],
+        protected mixed        $body = null,
+        private readonly array $serverParams = [],
         private array          $cookieParams = [],
         private array          $queryParams = [],
         private array          $uploadedFiles = [],

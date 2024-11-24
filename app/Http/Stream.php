@@ -13,10 +13,10 @@ class Stream implements StreamInterface
 
     public function __construct(private mixed $stream)
     {
-        $meta = stream_get_meta_data($stream);
+        $meta = \stream_get_meta_data($stream);
         $this->seekable = $meta['seekable'];
-        $this->readable = str_contains($meta['mode'], 'r') || str_contains($meta['mode'], '+');
-        $this->writable = str_contains($meta['mode'], 'w') || str_contains($meta['mode'], '+');
+        $this->readable = \str_contains($meta['mode'], 'r') || \str_contains($meta['mode'], '+');
+        $this->writable = \str_contains($meta['mode'], 'w') || \str_contains($meta['mode'], '+');
     }
 
     public function __toString(): string
@@ -32,7 +32,7 @@ class Stream implements StreamInterface
     public function close(): void
     {
         if (isset($this->stream)) {
-            fclose($this->stream);
+            \fclose($this->stream);
             $this->stream = null;
         }
     }
@@ -64,7 +64,7 @@ class Stream implements StreamInterface
 
     public function tell(): int
     {
-        $result = ftell($this->stream);
+        $result = \ftell($this->stream);
         if ($result === false) {
             throw new RuntimeException('Unable to determine the position of the pointer in the stream');
         }
@@ -86,7 +86,7 @@ class Stream implements StreamInterface
         if (!$this->seekable) {
             throw new RuntimeException('Stream is not seekable');
         }
-        if (fseek($this->stream, $offset, $whence) === -1) {
+        if (\fseek($this->stream, $offset, $whence) === -1) {
             throw new RuntimeException('Seeking position in the stream failed');
         }
     }
@@ -106,7 +106,7 @@ class Stream implements StreamInterface
         if (!$this->writable) {
             throw new RuntimeException('Cannot write to a non-writable stream');
         }
-        $result = fwrite($this->stream, $string);
+        $result = \fwrite($this->stream, $string);
         if ($result === false) {
             throw new RuntimeException('Failed to write to the stream');
         }
@@ -123,7 +123,7 @@ class Stream implements StreamInterface
         if (!$this->readable) {
             throw new RuntimeException('Cannot read from a non-readable stream');
         }
-        $result = fread($this->stream, $length);
+        $result = \fread($this->stream, $length);
         if ($result === false) {
             throw new RuntimeException('Failed to read from the stream');
         }
@@ -135,7 +135,7 @@ class Stream implements StreamInterface
         if (!isset($this->stream)) {
             throw new RuntimeException('Stream is detached');
         }
-        $contents = stream_get_contents($this->stream);
+        $contents = \stream_get_contents($this->stream);
         if ($contents === false) {
             throw new RuntimeException('Failed to get contents from the stream');
         }
@@ -147,8 +147,8 @@ class Stream implements StreamInterface
         if (!isset($this->stream)) {
             return null;
         }
-        $meta = stream_get_meta_data($this->stream);
-        if (is_null($key)) {
+        $meta = \stream_get_meta_data($this->stream);
+        if (\is_null($key)) {
             return $meta;
         }
         return $meta[$key] ?? null;

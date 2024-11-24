@@ -23,7 +23,7 @@ composer install
 
 To register a new route, follow these steps:
 
-1. Open the `public/index.php` file.
+1. Open the `config/routes.php` file.
 2. Locate the `$routes` array.
 3. Add a new entry to the array using the format:
 
@@ -42,7 +42,12 @@ To register a new route, follow these steps:
         'PUT' => ['App\Controller\UserController', 'updateUser']
     ]
    ```
-
+   If you need to skip middleware you can add specific parameter to the routes array:
+   ```php
+       '/user' => [
+           'GET' => ['App\Controller\UserController', 'getUser', 'middleware' => false],
+       ]
+   ```
 ## Running Static Code Analyzers
 
 ### PHPStan

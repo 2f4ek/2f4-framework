@@ -53,7 +53,7 @@ class Request extends Message implements RequestInterface
     public function withMethod($method): self
     {
         $clone = clone $this;
-        $clone->method = strtoupper($method);
+        $clone->method = \strtoupper($method);
         return $clone;
     }
 

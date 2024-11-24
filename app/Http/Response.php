@@ -56,36 +56,36 @@ class Response extends Message implements ResponseInterface
 
     public function hasHeader($name): bool
     {
-        return array_key_exists(strtolower($name), $this->headers);
+        return array_key_exists(\strtolower($name), $this->headers);
     }
 
     public function getHeader($name): array
     {
-        return $this->headers[strtolower($name)] ?? [];
+        return $this->headers[\strtolower($name)] ?? [];
     }
 
     public function withHeader($name, $value): self
     {
         $clone = clone $this;
-        $clone->headers[strtolower($name)] = is_array($value) ? $value : [$value];
+        $clone->headers[\strtolower($name)] = \is_array($value) ? $value : [$value];
         return $clone;
     }
 
     public function withAddedHeader($name, $value): self
     {
         $clone = clone $this;
-        $name = strtolower($name);
+        $name = \strtolower($name);
         if (!isset($clone->headers[$name])) {
             $clone->headers[$name] = [];
         }
-        $clone->headers[$name] = array_merge($clone->headers[$name], is_array($value) ? $value : [$value]);
+        $clone->headers[$name] = \array_merge($clone->headers[$name], \is_array($value) ? $value : [$value]);
         return $clone;
     }
 
     public function withoutHeader($name): self
     {
         $clone = clone $this;
-        unset($clone->headers[strtolower($name)]);
+        unset($clone->headers[\strtolower($name)]);
         return $clone;
     }
 

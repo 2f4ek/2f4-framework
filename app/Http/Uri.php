@@ -18,7 +18,7 @@ class Uri implements UriInterface
     public function __construct(string $uri = '')
     {
         if (!empty($uri)) {
-            $parts = parse_url($uri);
+            $parts = \parse_url($uri);
             if ($parts === false) {
                 throw new InvalidArgumentException("Invalid URI: $uri");
             }
@@ -87,7 +87,7 @@ class Uri implements UriInterface
     public function withScheme(string $scheme): UriInterface
     {
         $new = clone $this;
-        $new->scheme = strtolower($scheme);
+        $new->scheme = \strtolower($scheme);
         return $new;
     }
 
@@ -101,7 +101,7 @@ class Uri implements UriInterface
     public function withHost(string $host): UriInterface
     {
         $new = clone $this;
-        $new->host = strtolower($host);
+        $new->host = \strtolower($host);
         return $new;
     }
 
@@ -114,7 +114,7 @@ class Uri implements UriInterface
 
     public function withPath(string $path): UriInterface
     {
-        if (!preg_match('/^(\/?|([^\/]*:[^\/]*@)?[^\/]+(:\d+)?\/)(.*)$/', $path)) {
+        if (!\preg_match('/^(\/?|([^\/]*:[^\/]*@)?[^\/]+(:\d+)?\/)(.*)$/', $path)) {
             throw new InvalidArgumentException("Invalid path: $path");
         }
         $new = clone $this;

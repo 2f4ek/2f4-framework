@@ -26,7 +26,7 @@ class UploadedFile implements UploadedFileInterface
         }
 
         if ($this->stream === null) {
-            $this->stream = new Stream(fopen($this->file, 'r+'));
+            $this->stream = new Stream(\fopen($this->file, 'r+'));
         }
 
         return $this->stream;
@@ -44,7 +44,7 @@ class UploadedFile implements UploadedFileInterface
 
         $this->validateTargetPath($targetPath);
 
-        if (!move_uploaded_file($this->file, $targetPath)) {
+        if (!\move_uploaded_file($this->file, $targetPath)) {
             throw new RuntimeException('Failed to move uploaded file.');
         }
 
@@ -73,8 +73,8 @@ class UploadedFile implements UploadedFileInterface
 
     private function validateTargetPath(string $targetPath): void
     {
-        $directory = dirname($targetPath);
-        if (!is_writable($directory)) {
+        $directory = \dirname($targetPath);
+        if (!\is_writable($directory)) {
             throw new RuntimeException('Upload target path is not writable.');
         }
     }

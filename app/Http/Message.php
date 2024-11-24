@@ -11,7 +11,9 @@ class Message implements MessageInterface
         private mixed $body = null,
         private string $protocolVersion = '1.1',
         private array $headers = []
-    ) {}
+    ) {
+        $this->setHeadersToLowerCase();
+    }
 
     public function getProtocolVersion(): string
     {
@@ -32,12 +34,12 @@ class Message implements MessageInterface
 
     public function hasHeader(string $name): bool
     {
-        return array_key_exists(strtolower($name), $this->headers);
+        return array_key_exists(\strtolower($name), $this->headers);
     }
 
-    public function getHeader(string $name): array
+    public function getHeader(string $name): mixed
     {
-        return $this->headers[strtolower($name)] ?? [];
+        return $this->headers[\strtolower($name)] ?? null;
     }
 
     public function getHeaderLine(string $name): string
@@ -50,7 +52,7 @@ class Message implements MessageInterface
         $value = is_array($value) ? $value : [$value];
 
         $new = clone $this;
-        $new->headers[strtolower($name)] = $value;
+        $new->headers[\strtolower($name)] = $value;
         return $new;
     }
 
@@ -59,10 +61,10 @@ class Message implements MessageInterface
         $value = is_array($value) ? $value : [$value];
 
         $new = clone $this;
-        $name = strtolower($name);
+        $name = \strtolower($name);
 
         if ($new->hasHeader($name)) {
-            $new->headers[$name] = array_merge($new->headers[$name], $value);
+            $new->headers[$name] = \array_merge($new->headers[$name], $value);
         } else {
             $new->headers[$name] = $value;
         }
@@ -73,7 +75,7 @@ class Message implements MessageInterface
     public function withoutHeader(string $name): self
     {
         $new = clone $this;
-        unset($new->headers[strtolower($name)]);
+        unset($new->headers[\strtolower($name)]);
         return $new;
     }
 
@@ -87,5 +89,10 @@ class Message implements MessageInterface
         $new = clone $this;
         $new->body = $body;
         return $new;
+    }
+
+    private function setHeadersToLowerCase(): void
+    {
+        $this->headers = array_change_key_case($this->headers, CASE_LOWER);
     }
 }
