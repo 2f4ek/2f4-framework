@@ -64,6 +64,7 @@ and suboptimal code patterns. The output includes a list of issues with suggeste
 ### Phan
 Phan is a static analyzer focusing on PHP's type system and can detect issues related to type compatibility,
 unused code, and more. The results will list detected issues along with their severity and location in the code.
+
 ```bash 
     vendor/bin/phan --allow-polyfill-parser
 ```

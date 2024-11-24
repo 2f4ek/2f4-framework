@@ -1,13 +1,14 @@
 <?php
 
 use Framework2f4\Controller\ExampleController;
-use GuzzleHttp\Psr7\ServerRequest;
-use Psr\Log\LoggerInterface;
+use Framework2f4\Http\ServerRequest;
+use Framework2f4\Http\Stream;
+use Framework2f4\Http\Uri;
+use Framework2f4\Route;
 
 require __DIR__ . '/../vendor/autoload.php';
 
 $container = require __DIR__ . '/../config/service_container.php';
-$request = ServerRequest::fromGlobals();
 
 $routes = [
     '/' => [
@@ -17,15 +18,26 @@ $routes = [
     ],
 ];
 
-$uri = $request->getUri()->getPath();
-$method = $request->getMethod();
-$controllerInfo = $routes[$uri][$method] ?? null;
-if ($controllerInfo) {
-    [$controller, $method] = $controllerInfo;
-    $controller = new $controller($container->get(LoggerInterface::class));
-    $response = $controller->$method($request);
+$method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+$uri = new Uri($_SERVER['REQUEST_URI'] ?? '/');
+$headers = getallheaders();
+$body = new Stream(fopen('php://input', 'r+'));
+$request = new ServerRequest($method, $uri, $headers, $body, $_SERVER);
 
-    echo $response->getBody();
-} else {
-    echo "404 Not Found";
+$router = new Route($routes);
+$response = $router->dispatch($request);
+
+header(sprintf(
+    'HTTP/%s %s %s',
+    $response->getProtocolVersion(),
+    $response->getStatusCode(),
+    $response->getReasonPhrase()
+));
+
+foreach ($response->getHeaders() as $header => $values) {
+    foreach ($values as $value) {
+        header(sprintf('%s: %s', $header, $value), false);
+    }
 }
+
+echo $response->getBody();
