@@ -14,7 +14,8 @@
     "composer/xdebug-handler": "^3.0",
     "phan/phan": "^5.4",
     "phpstan/phpstan": "^1.8",
-    "vimeo/psalm": "^4.0"
+    "vimeo/psalm": "^4.0",
+    "phpunit/phpunit": "^9.5"
   },
   "config": {
     "allow-plugins": {},
@@ -27,6 +28,11 @@
   "autoload": {
     "psr-4": {
       "Framework2f4\\": "app/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Framework2f4\\Tests\\": "tests/"
     }
   }
 }
