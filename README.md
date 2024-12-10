@@ -73,3 +73,34 @@ unused code, and more. The results will list detected issues along with their se
 ```bash 
     vendor/bin/phan --allow-polyfill-parser
 ```
+
+## Running Tests
+
+### Behat Tests
+Ensure that any necessary environment is properly configured before running Behat tests. This includes any local 
+servers or database configurations.
+
+```bash 
+    vendor/bin/behat
+```
+This will execute all the feature tests located in the features/ directory.
+
+### Unit tests
+Unit tests focus on individual components (classes, functions) to ensure they behave as expected in isolation.
+Run unit tests using PHPUnit:
+
+```bash 
+    vendor/bin/behat
+```
+
+For a specific unit test file:
+
+```bash 
+    vendor/bin/phpunit tests/Unit/SpecificTest.php
+```
+
+To generate reports:
+
+```bash 
+    php -dxdebug.mode=coverage vendor/bin/phpunit --coverage-html coverage/html
+```

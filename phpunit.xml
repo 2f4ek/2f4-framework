@@ -15,7 +15,7 @@
             <directory>vendor</directory>
         </exclude>
         <report>
-            <clover outputFile="coverage/clover.xml"/>
+            <clover outputFile="coverage/coverage.xml"/>
             <html outputDirectory="coverage/html"/>
         </report>
     </coverage>
