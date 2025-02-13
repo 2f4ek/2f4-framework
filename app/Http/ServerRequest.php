@@ -26,6 +26,7 @@ class ServerRequest extends Request implements ServerRequestInterface
     {
         parent::__construct($method, $uri, $body, $headers, $protocolVersion);
         $this->setUploadedFiles($uploadedFiles);
+        $this->parsedBody = $this->sanitizeInput($parsedBody);
     }
 
     public function getServerParams(): array
@@ -53,7 +54,7 @@ class ServerRequest extends Request implements ServerRequestInterface
     public function withQueryParams(array $query): self
     {
         $clone = clone $this;
-        $clone->queryParams = $query;
+        $clone->queryParams = $this->sanitizeInput($query);
         return $clone;
     }
 
@@ -91,7 +92,7 @@ class ServerRequest extends Request implements ServerRequestInterface
         }
 
         $clone = clone $this;
-        $clone->parsedBody = $data;
+        $clone->parsedBody = $this->sanitizeInput($data);
         return $clone;
     }
 
@@ -117,5 +118,17 @@ class ServerRequest extends Request implements ServerRequestInterface
         $clone = clone $this;
         unset($clone->attributes[$name]);
         return $clone;
+    }
+
+    private function sanitizeInput(mixed $data): mixed
+    {
+        if (is_array($data)) {
+            foreach ($data as $key => $value) {
+                $data[$key] = $this->sanitizeInput($value);
+            }
+        } elseif (is_string($data)) {
+            $data = htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
+        }
+        return $data;
     }
 }
