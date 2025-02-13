@@ -19,7 +19,9 @@ $uri = new Uri($_SERVER['REQUEST_URI'] ?? '/');
 $headers = \getallheaders();
 $body = new Stream(fopen('php://input', 'r+'));
 $request = new ServerRequest($method, $uri, $headers, $body, $_SERVER);
-
+if ($request->getMethod() === 'POST') {
+    $request = $request->withParsedBody($_POST);
+}
 $router = $container->get(Route::class);
 $router->addMiddleware(new AuthMiddleware());
 
