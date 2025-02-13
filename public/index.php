@@ -8,7 +8,9 @@ use Framework2f4\Route;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 $container = require __DIR__ . '/../config/service_container.php';
 

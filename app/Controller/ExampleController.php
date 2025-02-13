@@ -23,6 +23,8 @@ readonly class ExampleController
 
     public function testLogin(): Response
     {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+
         ob_start();
         include __DIR__ . '/../../public/login.php';
         $content = ob_get_clean();
