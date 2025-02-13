@@ -42,6 +42,11 @@ RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/co
     && apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ --allow-untrusted php83-pecl-apcu \
     && ln -s /usr/bin/php83 /usr/bin/php
 
+# Add security configurations
+RUN echo "expose_php = Off" >> /etc/php83/php.ini \
+    && echo "disable_functions = exec,passthru,shell_exec,system,proc_open,popen,curl_exec,curl_multi_exec,parse_ini_file,show_source" >> /etc/php83/php.ini
+
+
 ADD etc/artifacts/rootfs /
 
 CMD ["/usr/sbin/php-fpm83", "-R", "--nodaemonize"]

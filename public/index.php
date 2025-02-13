@@ -3,10 +3,12 @@
 use Framework2f4\Http\ServerRequest;
 use Framework2f4\Http\Stream;
 use Framework2f4\Http\Uri;
-use Framework2f4\Middleware\DefaultMiddleware;
+use Framework2f4\Middleware\AuthMiddleware;
 use Framework2f4\Route;
 
 require __DIR__ . '/../vendor/autoload.php';
+
+session_start();
 
 $container = require __DIR__ . '/../config/service_container.php';
 
@@ -17,7 +19,7 @@ $body = new Stream(fopen('php://input', 'r+'));
 $request = new ServerRequest($method, $uri, $headers, $body, $_SERVER);
 
 $router = $container->get(Route::class);
-$router->addMiddleware(new DefaultMiddleware());
+$router->addMiddleware(new AuthMiddleware());
 
 $response = $router->dispatch($request);
 

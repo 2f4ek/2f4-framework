@@ -5,12 +5,20 @@ namespace Framework2f4\Middleware;
 use Framework2f4\Http\Response;
 use Psr\Http\Message\ServerRequestInterface;
 
-class DefaultMiddleware implements MiddlewareInterface
+class RoleMiddleware implements MiddlewareInterface
 {
+    private string $requiredRole;
+
+    public function __construct(string $requiredRole)
+    {
+        $this->requiredRole = $requiredRole;
+    }
+
     public function process(ServerRequestInterface $request, callable $next): Response
     {
-        $proceed = $request->getHeader('proceed');
-        if ($proceed) {
+        $user = $_SESSION['user'] ?? null;
+
+        if ($user && $user->getRole() === $this->requiredRole) {
             return $next($request);
         }
 
