@@ -1,13 +1,15 @@
 <?php
 
+use Dotenv\Dotenv;
 use Framework2f4\Http\ServerRequest;
 use Framework2f4\Http\Stream;
 use Framework2f4\Http\Uri;
-use Framework2f4\Middleware\AuthMiddleware;
-use Framework2f4\Middleware\CSRFMiddleware;
 use Framework2f4\Route;
 
 require __DIR__ . '/../vendor/autoload.php';
+
+$dotenv = Dotenv::createImmutable(__DIR__.'/..');
+$dotenv->load();
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();

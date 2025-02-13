@@ -13,7 +13,7 @@ class Database
     {
         if (self::$instance === null) {
             try {
-                self::$instance = new PDO('mysql:host=mysql;dbname=framework2f4', 'root', 'password');
+                self::$instance = new PDO($_ENV['DB_DSN'], $_ENV['DB_USER'], $_ENV['DB_PASS']);
                 self::$instance->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             } catch (PDOException $e) {
                 die('Database connection failed: ' . $e->getMessage());

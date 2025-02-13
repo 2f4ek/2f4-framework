@@ -9,10 +9,11 @@ use Framework2f4\Repository\UserRepository;
 
 class AuthController
 {
-    private string $secretKey = 'secret_key';
+    private string $secretKey;
 
     public function __construct(private $userRepository = new UserRepository())
     {
+        $this->secretKey = $_ENV['JWT_SECRET_KEY'];
     }
 
     public function loginWithJWT(Request $request): Response

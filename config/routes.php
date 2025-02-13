@@ -13,7 +13,7 @@ use Framework2f4\Middleware\RoleMiddleware;
 
 $csrfMiddleware = new CSRFMiddleware();
 $authMiddleware = new AuthMiddleware();
-$jwtMiddleware = new JWTMiddleware('secret_key');
+$jwtMiddleware = new JWTMiddleware();
 
 return [
     '/' => [

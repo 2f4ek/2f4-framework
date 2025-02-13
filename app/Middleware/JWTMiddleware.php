@@ -12,9 +12,9 @@ class JWTMiddleware implements MiddlewareInterface
 {
     private string $secretKey;
 
-    public function __construct(string $secretKey)
+    public function __construct()
     {
-        $this->secretKey = $secretKey;
+        $this->secretKey = $_ENV['JWT_SECRET_KEY'];
     }
 
     public function process(ServerRequestInterface $request, callable $next): Response
@@ -25,18 +25,14 @@ class JWTMiddleware implements MiddlewareInterface
         }
         if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
             $jwt = $matches[1];
-            try {
-                $decoded = JWT::decode($jwt, new Key($this->secretKey, 'HS256'));
-                $user = User::findByName($decoded->userName);
-                if ($user) {
-                    $_SESSION['user'] = $user;
-                    return $next($request);
-                }
-
-                return new Response(401, [], 'User not found');
-            } catch (\Exception $e) {
-                return new Response(401, [], 'Invalid token');
+            $decoded = JWT::decode($jwt, new Key($this->secretKey, 'HS256'));
+            $user = User::findByName($decoded->userName);
+            if ($user) {
+                $_SESSION['user'] = $user;
+                return $next($request);
             }
+
+            return new Response(401, [], 'Invalid token');
         }
         return new Response(401, [], 'Authorization header not found');
     }
