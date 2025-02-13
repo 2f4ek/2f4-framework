@@ -16,13 +16,14 @@ class AuthController
 
     public function login(Request $request): Response
     {
-        $csrfToken = $request->getParsedBody()['csrf_token'] ?? '';
+        $requestData = $request->getParsedBody();
+        $csrfToken = $requestData['csrf_token'] ?? '';
         if (!$csrfToken || !hash_equals($_SESSION['csrf_token'], $csrfToken)) {
             return new Response(403, [], 'Invalid CSRF token');
         }
 
-        $username = $request->getParsedBody()['username'] ?? '';
-        $password = $request->getParsedBody()['password'] ?? '';
+        $username = $requestData['username'] ?? '';
+        $password = $requestData['password'] ?? '';
 
         if (isset($this->users[$username]) && password_verify($password, $this->users[$username]['password'])) {
             $_SESSION['user'] = new User(1, $username, $password, $this->users[$username]['role']);
