@@ -46,6 +46,12 @@ class Route
             return $this->sendResponse($request);
         }
 
+        if (isset($this->routes[$path][$method]['middleware'])) {
+            foreach ($this->routes[$path][$method]['middleware'] as $middleware) {
+                $this->addMiddleware($middleware);
+            }
+        }
+
         return $this->processMiddleware($request, function ($request) {
             return $this->sendResponse($request);
         });

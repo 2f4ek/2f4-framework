@@ -50,4 +50,11 @@ readonly class ExampleController
 
         return Response::html($html);
     }
+
+    public function fetchAndParseXML(): Response
+    {
+        //TODO: resource is not available
+        $url = 'https://thetestrequest.com/authors';
+        return Response::json(['url' => $url]);
+    }
 }
