@@ -9,3 +9,5 @@ coverage
 
 docker-compose.yml
 composer.lock
+
+mysqldb

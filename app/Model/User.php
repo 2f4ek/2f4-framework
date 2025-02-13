@@ -2,32 +2,25 @@
 
 namespace Framework2f4\Model;
 
-readonly class User
+use Framework2f4\Database\Database;
+use PDO;
+
+class User extends BaseModel
 {
-    public function __construct(
-        private int    $id,
-        private string $username,
-        private string $password,
-        private string $role
-    ) {}
+    protected static string $table = 'users';
 
-    public function getId(): int
+    public static function findByName(string $username): ?self
     {
-        return $this->id;
-    }
+        $db = Database::getInstance();
+        $stmt = $db->prepare('SELECT * FROM ' . self::$table . ' WHERE username = :username');
+        $stmt->execute([':username' => $username]);
+        $user = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-    public function getUsername(): string
-    {
-        return $this->username;
+        return $user ? new User($user) : null;
     }
 
     public function getPassword(): string
     {
-        return $this->password;
-    }
-
-    public function getRole(): string
-    {
-        return $this->role;
+        return $this->attributes['password'] ?? '';
     }
 }

@@ -20,3 +20,20 @@ services:
       - XDEBUG_CLIENT_HOST=host.docker.internal
     volumes:
       - ./:/app:rw,delegated
+    depends_on:
+      - mysql
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    # If you're using Linux you can comment out the line below
+    platform: linux/amd64
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - ./etc/infrastructure/dev/mysql:/etc/mysql/conf.d:ro
+      - ./mysqldb:/var/lib/mysql
+    tmpfs:
+      - /tmp/:rw,noexec,nosuid,size=500m
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=framework2f4

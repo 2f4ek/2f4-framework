@@ -4,29 +4,27 @@ namespace Framework2f4\Controller;
 
 use Framework2f4\Http\Request;
 use Framework2f4\Http\Response;
-use Framework2f4\Model\User;
+use Framework2f4\Repository\UserRepository;
 
 class AuthController
 {
-    // This is just a simple example. admin - aminpass, user - userpass
-    private array $users = [
-        'admin' => ['password' => '$2y$10$PwTqQBP0QTKjMHSH1gRq3OOjYYahKxIKKGseB.zkBpQohrZZf.UtW', 'role' => 'admin'],
-        'user' => ['password' => '$2y$10$tiPaV6CGT/CyyMYK4exGNuwieHZKOZv3FlE5Vb0AuP9wU5E/d8.3e', 'role' => 'user']
-    ];
+    private UserRepository $userRepository;
+
+    public function __construct()
+    {
+        $this->userRepository = new UserRepository();
+    }
 
     public function login(Request $request): Response
     {
         $requestData = $request->getParsedBody();
-        $csrfToken = $requestData['csrf_token'] ?? '';
-        if (!$csrfToken || !hash_equals($_SESSION['csrf_token'], $csrfToken)) {
-            return new Response(403, [], 'Invalid CSRF token');
-        }
-
         $username = $requestData['username'] ?? '';
         $password = $requestData['password'] ?? '';
 
-        if (isset($this->users[$username]) && password_verify($password, $this->users[$username]['password'])) {
-            $_SESSION['user'] = new User(1, $username, $password, $this->users[$username]['role']);
+        $user = $this->userRepository->findByUsername($username);
+
+        if ($user && password_verify($password, $user->getPassword())) {
+            $_SESSION['user'] = $user;
             return new Response(200, [], 'Login successful');
         }
 

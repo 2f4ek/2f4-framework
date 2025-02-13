@@ -19,6 +19,12 @@ Once Composer is installed, run the following command in the root directory of y
 composer install
 ```
 
+## Running Migration
+
+```bash
+php bin/migrations.php
+```
+
 ## Registering Routes
 
 To register a new route, follow these steps:

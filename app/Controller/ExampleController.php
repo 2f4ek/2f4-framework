@@ -21,12 +21,10 @@ readonly class ExampleController
         return new Response(200, [], 'Put response');
     }
 
-    public function testLogin(): Response
+    public function appDemo(): Response
     {
-        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-
         ob_start();
-        include __DIR__ . '/../../public/login.php';
+        include __DIR__ . '/../../public/app-demo.php';
         $content = ob_get_clean();
 
         return new Response(200, [], $content);
