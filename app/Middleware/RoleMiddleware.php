@@ -16,12 +16,10 @@ class RoleMiddleware implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, callable $next): Response
     {
-        $user = $_SESSION['user'] ?? null;
-
-        if ($user && $user->getRole() === $this->requiredRole) {
-            return $next($request);
+        if (!isset($_SESSION['user']) || $_SESSION['user']->getRole() !== $this->requiredRole) {
+            return new Response(403, [], 'Access Denied');
         }
 
-        return new Response(403, [], 'Access Denied');
+        return $next($request);
     }
 }

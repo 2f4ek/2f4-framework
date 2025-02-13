@@ -8,10 +8,10 @@
     <title>Login</title>
 </head>
 <body>
-<?php session_start(); ?>
 <?php if (!isset($_SESSION['user'])): ?>
     <h1>Login</h1>
     <form action="/login" method="post">
+        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '') ?>">
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required>
         <br>
