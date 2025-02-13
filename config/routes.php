@@ -12,9 +12,10 @@ use Framework2f4\Middleware\RoleMiddleware;
 
 return [
     '/' => [
-        'GET' => [ExampleController::class, 'testGet', 'middleware' => false],
-        'POST' => [ExampleController::class, 'testPost', 'middleware' => false],
-        'PUT' => [ExampleController::class, 'testPut'],
+        'GET' => [ExampleController::class, 'testGet', 'middleware' => false]
+    ],
+    '/json' => [
+        'GET' => [ExampleController::class, 'testJson', 'middleware' => false],
     ],
     '/login' => [
         'POST' => [AuthController::class, 'login', 'middleware' => [new CSRFMiddleware()]],

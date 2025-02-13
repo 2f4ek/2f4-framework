@@ -20,22 +20,5 @@ class ExampleControllerTest extends TestCase
         $response = $this->controller->testGet();
 
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertEquals('Get response', $response->getBody());
-    }
-
-    public function testPostResponse(): void
-    {
-        $response = $this->controller->testPost();
-
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertEquals('Post response', $response->getBody());
-    }
-
-    public function testPutResponse(): void
-    {
-        $response = $this->controller->testPut();
-
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertEquals('Put response', $response->getBody());
     }
 }

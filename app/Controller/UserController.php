@@ -8,11 +8,8 @@ use Framework2f4\Repository\UserRepository;
 
 class UserController
 {
-    private UserRepository $userRepository;
-
-    public function __construct()
+    public function __construct(private $userRepository = new UserRepository())
     {
-        $this->userRepository = new UserRepository();
     }
 
     public function create(ServerRequest $request): Response

@@ -3,30 +3,51 @@
 namespace Framework2f4\Controller;
 
 use Framework2f4\Http\Response;
+use Framework2f4\Model\Cart;
+use Framework2f4\Model\CartItem;
+use Framework2f4\Model\Order;
+use Framework2f4\Model\Product;
+use Framework2f4\Template\TemplateEngine;
 
 readonly class ExampleController
 {
+    public function __construct(
+        private TemplateEngine $templateEngine = new TemplateEngine(__DIR__ . '/../../views')
+    )
+    {
+    }
+
     public function testGet(): Response
     {
-        return new Response(200, [], 'Get response');
+        $html = $this->templateEngine->render('example', [
+            'title' => 'Test Page',
+            'heading' => 'Welcome to the Test Page',
+            'content' => 'This is a simple test page.'
+        ]);
+        return Response::html($html);
     }
 
-    public function testPost(): Response
+    public function testJson(): Response
     {
-        return new Response(200, [], 'Post response');
-    }
+        $data = [
+            'message' => 'This is a JSON response',
+            'status' => 'success'
+        ];
 
-    public function testPut(): Response
-    {
-        return new Response(200, [], 'Put response');
+        return Response::json($data);
     }
 
     public function appDemo(): Response
     {
-        ob_start();
-        include __DIR__ . '/../../public/app-demo.php';
-        $content = ob_get_clean();
+        $html = $this->templateEngine->render('app-demo', [
+            'csrfToken' => $_SESSION['csrf_token'] ?? '',
+            'products' => Product::all(),
+            'carts' => Cart::where('user_id', $_SESSION['user']->id),
+            'user' => $_SESSION['user'],
+            'cartItems' => CartItem::all(),
+            'orders' => Order::all()
+        ]);
 
-        return new Response(200, [], $content);
+        return Response::html($html);
     }
 }

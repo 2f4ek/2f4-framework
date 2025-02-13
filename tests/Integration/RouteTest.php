@@ -25,7 +25,6 @@ class RouteTest extends TestCase
         $response = $this->route->dispatch($request);
 
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertEquals('Get response', (string)$response->getBody());
     }
 
     public function testNotFoundResponse(): void

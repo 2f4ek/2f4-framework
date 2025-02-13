@@ -96,7 +96,7 @@ Unit tests focus on individual components (classes, functions) to ensure they be
 Run unit tests using PHPUnit:
 
 ```bash 
-    vendor/bin/behat
+    vendor/bin/phpunit
 ```
 
 For a specific unit test file:
@@ -109,4 +109,53 @@ To generate reports:
 
 ```bash 
     php -dxdebug.mode=coverage vendor/bin/phpunit --coverage-html coverage/html
+```
+
+## Templating Engine
+
+### HTML Responses
+
+To return an HTML response, use the `TemplateEngine` class to render a template and pass it to the `Response::html` method.
+
+Example:
+
+```php
+$html = $this->templateEngine->render('example', [
+    'title' => 'Test Page',
+    'heading' => 'Welcome to the Test Page',
+    'content' => 'This is a simple test page.'
+]);
+
+return Response::html($html);
+```
+
+### JSON Responses
+
+To return a JSON response, use the Response::json method and pass an array of data.
+
+Example:
+
+```php
+$data = [
+    'message' => 'This is a JSON response',
+    'status' => 'success'
+];
+
+return Response::json($data);
+```
+
+### Security Measures
+
+All variables passed to templates are escaped using htmlspecialchars to prevent XSS attacks.
+The template engine uses EXTR_SKIP to avoid overwriting existing variables.
+
+### Nested Templates
+
+The template engine supports nested templates by including other template files within a template.
+
+Example:
+```php
+<?php include 'header.php'; ?>
+<h1><?= htmlspecialchars($heading, ENT_QUOTES, 'UTF-8') ?></h1>
+<?php include 'footer.php'; ?>
 ```

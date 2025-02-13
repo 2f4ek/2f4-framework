@@ -130,4 +130,14 @@ class Response extends Message implements ResponseInterface
             $this->reasonPhrase = $reasonPhrase;
         }
     }
+
+    public static function json(array $data, int $statusCode = 200): self
+    {
+        return new self($statusCode, ['Content-Type' => 'application/json'], json_encode($data));
+    }
+
+    public static function html(string $html, int $statusCode = 200): self
+    {
+        return new self($statusCode, ['Content-Type' => 'text/html'], $html);
+    }
 }
